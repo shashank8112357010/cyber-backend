@@ -17,7 +17,7 @@ const app = express()
 app.use(cors({}))
 
 app.use(bodyParser.json())
-app.use('/pritam/uploads', express.static(path.join(__dirname, 'uploads')))
+app.use('/cyber/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // MongoDB Connection
 mongoose
@@ -27,12 +27,12 @@ mongoose
   })
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('DB Connection Error:', err))
-app.get('/pritam/test', (req, res) => res.send('Server is up for brohh'))
+app.get('/cyber/test', (req, res) => res.send('Server is up for brohh'))
 // Routes
-app.use('/pritam/api/users', userRoutes) // User routes
-app.use('/pritam/api/help', helpRoutes) // Help request routes
-app.use('/pritam/api/blogs', blogRoutes) // Blog routes
-app.use('/pritam/api/testimonials', testimonialRoutes) // Testimonial routes
+app.use('/cyber/api/users', userRoutes) // User routes
+app.use('/cyber/api/help', helpRoutes) // Help request routes
+app.use('/cyber/api/blogs', blogRoutes) // Blog routes
+app.use('/cyber/api/testimonials', testimonialRoutes) // Testimonial routes
 
 
 // Server Setup
