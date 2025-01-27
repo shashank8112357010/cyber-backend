@@ -3,7 +3,7 @@ const router = express.Router()
 
 // Import your models
 const Blog = require('../models/Blog')
-const HelpRequest = require('../models/HelpRequest')
+const contact = require('../models/Contact')
 const User = require('../models/User')
 const {
   authenticate,
@@ -19,15 +19,22 @@ router.get('/count', authenticate(), authorizeAdmin(), async (req, res) => {
       .sort({ updatedAt: -1 })
       .select('updatedAt')
 
-    const helpRequestCount = await HelpRequest.countDocuments()
-    const helpRequestLastUpdated = await HelpRequest.findOne()
+    const contactCount = await contact.countDocuments()
+    const contactLastUpdated = await contact.findOne()
       .sort({ updatedAt: -1 })
       .select('updatedAt')
 
     const userCount = await User.countDocuments()
     const userLastUpdated = await User.findOne()
       .sort({ updatedAt: -1 })
+
+      
       .select('updatedAt')
+
+      const testimonialCount = await Testimonial.countDocuments()
+      const testimonialLastUpdated = await Testimonial.findOne()
+        .sort({ updatedAt: -1 })
+        .select('updatedAt')
 
     // New additions
 
@@ -40,9 +47,15 @@ router.get('/count', authenticate(), authorizeAdmin(), async (req, res) => {
           lastUpdated: blogLastUpdated ? blogLastUpdated.updatedAt : null
         },
         help: {
-          count: helpRequestCount,
-          lastUpdated: helpRequestLastUpdated
-            ? helpRequestLastUpdated.updatedAt
+          count: contactCount,
+          lastUpdated: contactLastUpdated
+            ? contactLastUpdated.updatedAt
+            : null
+        },
+        testimonial: {
+          count: testimonialCount,
+          lastUpdated: testimonialLastUpdated
+            ? testimonialLastUpdated.updatedAt
             : null
         },
 

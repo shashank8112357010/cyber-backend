@@ -11,7 +11,7 @@ const router = express.Router()
 router.post('/', submitContactForm)
 
 // Admin routes
-router.get('/',  getAllContactSubmissions)
-router.put('/:contactId',  updateContactStatus)
+router.get('/', getAllContactSubmissions)
+router.put('/:contactId', updateContactStatus)
 
 module.exports = router
