@@ -29,7 +29,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no root@157.173.220.43 << EOF
             # Navigate to the project directory
-            cd /root/cyber
+            cd /root/cyber/cyber-backend
             
             # Pull the latest changes
             git pull origin main
