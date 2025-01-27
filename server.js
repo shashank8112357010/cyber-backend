@@ -27,7 +27,7 @@ mongoose
   })
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('DB Connection Error:', err))
-app.get('/cyber/test', (req, res) => res.send('Server is up for cyber'))
+app.get('/cyber/test', (req, res) => res.send('Server is up for cyber api'))
 // Routes
 app.use('/cyber/api/users', userRoutes) // User routes
 app.use('/cyber/api/help', helpRoutes) // Help request routes
