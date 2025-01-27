@@ -1,0 +1,42 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up SSH key
+      - name: Set up SSH key
+        env:
+          SSH_PRIVATE_KEY_BASE64: ${{ secrets.SSH_PRIVATE_KEY_BASE64 }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_BASE64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 157.173.220.43 >> ~/.ssh/known_hosts
+
+      # Step 3: Deploy Code to VPS and Install Node.js Modules
+      - name: Deploy Code to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no root@157.173.220.43 << EOF
+            # Navigate to the project directory
+            cd /root/cyber
+            
+            # Pull the latest changes
+            git pull origin main
+            
+            # Install Node.js modules
+            npm install --production
+
+            # Restart the app using PM2
+            pm2 restart cyber  
+          EOF
