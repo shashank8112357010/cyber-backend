@@ -5,6 +5,7 @@ const router = express.Router()
 const Blog = require('../models/Blog')
 const contact = require('../models/Contact')
 const User = require('../models/User')
+const Testimonial = require('../models/Testimonial')
 const {
   authenticate,
   authorizeAdmin
