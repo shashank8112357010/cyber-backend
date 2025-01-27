@@ -33,6 +33,8 @@ app.use('/cyber/api/users', userRoutes) // User routes
 app.use('/cyber/api/help', helpRoutes) // Help request routes
 app.use('/cyber/api/blogs', blogRoutes) // Blog routes
 app.use('/cyber/api/testimonials', testimonialRoutes) // Testimonial routes
+app.use('/cyber/api/dashboard', dashboardRoutes) // Testimonial routes
+
 
 
 // Server Setup
