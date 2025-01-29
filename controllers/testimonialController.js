@@ -9,7 +9,7 @@ exports.createTestimonial = async (req, res) => {
   try {
     const testimonialData = {
       ...req.body,
-      image: `${process.env.ServerUrl}/uploads/${req.file.filename}` // Store the image path in the database
+     
     }
 
     const testimonial = new Testimonial(testimonialData)

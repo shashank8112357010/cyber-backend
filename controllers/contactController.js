@@ -1,9 +1,9 @@
 const { sendMail } = require('../common/sendmail.js')
 const ContactUs = require('../models/Contact.js')
 const { Parser } = require('json2csv')
-const PDFDocument = require('pdfkit');
-const path = require('path');
-const fs = require('fs');
+const PDFDocument = require('pdfkit')
+const path = require('path')
+const fs = require('fs')
 
 exports.submitContactForm = async (req, res) => {
   try {
@@ -129,7 +129,7 @@ exports.downloadContactSubmissions = async (req, res) => {
       'companySize',
       'websiteUrl',
       'servicesInterestedIn',
-      'additionalNotes',
+      'additionalNotes'
     ]
 
     const json2csvParser = new Parser({ fields })
@@ -142,22 +142,26 @@ exports.downloadContactSubmissions = async (req, res) => {
   }
 }
 
-
 exports.downloadContactSubmissionsPdf = async (req, res) => {
   try {
-    const contacts = await ContactUs.find();
+    const contacts = await ContactUs.find()
 
     if (!contacts.length) {
-      return res.status(404).json({ message: 'No contact form submissions found' });
+      return res
+        .status(404)
+        .json({ message: 'No contact form submissions found' })
     }
 
-    const doc = new PDFDocument({ margin: 30, size: 'A4', layout: 'landscape' });
-    const filePath = path.join(__dirname, 'contact-submissions.pdf');
-    const stream = fs.createWriteStream(filePath);
-    doc.pipe(stream);
+    const doc = new PDFDocument({ margin: 30, size: 'A4', layout: 'landscape' })
+    const filePath = path.join(__dirname, 'contact-submissions.pdf')
+    const stream = fs.createWriteStream(filePath)
+    doc.pipe(stream)
 
     // Title
-    doc.fontSize(18).text('Contact Form Submissions', { align: 'center' }).moveDown(2);
+    doc
+      .fontSize(18)
+      .text('Contact Form Submissions', { align: 'center' })
+      .moveDown(2)
 
     // Table Headers
     const headers = [
@@ -169,30 +173,32 @@ exports.downloadContactSubmissionsPdf = async (req, res) => {
       'Company Size',
       'Website URL',
       'Services Interested In',
-      'Additional Notes',
+      'Additional Notes'
+    ]
 
-    ];
+    const columnWidths = [60, 120, 80, 100, 80, 80, 130, 120, 120] // Reduced widths
+    const columnSpacing = 1 // Adjust spacing between columns
 
-    const columnWidths = [60, 120, 80, 100, 80, 80, 130, 120, 120]; // Reduced widths
-    const columnSpacing = 1; // Adjust spacing between columns
-
-    const startX = 10; // Starting position for columns
-    let yPosition = doc.y;
+    const startX = 10 // Starting position for columns
+    let yPosition = doc.y
 
     const drawTableHeader = () => {
-      let currentX = startX; // Reset X position
+      let currentX = startX // Reset X position
       headers.forEach((header, i) => {
-        doc.fontSize(7).font('Helvetica-Bold').text(header, currentX, yPosition, {
-          width: columnWidths[i],
-          align: 'left',
-        });
-        currentX += columnWidths[i] + columnSpacing; // Move to the next column
-      });
-      yPosition += 20; // Move down for rows
-    };
+        doc
+          .fontSize(7)
+          .font('Helvetica-Bold')
+          .text(header, currentX, yPosition, {
+            width: columnWidths[i],
+            align: 'left'
+          })
+        currentX += columnWidths[i] + columnSpacing // Move to the next column
+      })
+      yPosition += 20 // Move down for rows
+    }
 
     // Draw Headers
-    drawTableHeader();
+    drawTableHeader()
 
     // Table Rows
     contacts.forEach((contact) => {
@@ -205,44 +211,41 @@ exports.downloadContactSubmissionsPdf = async (req, res) => {
         contact.companySize || '-',
         contact.websiteUrl || '-',
         (contact.servicesInterestedIn || []).join(', ') || '-',
-        contact.additionalNotes || '-',
+        contact.additionalNotes || '-'
+      ]
 
-
-      ];
-
-      let currentX = startX; // Reset X position
+      let currentX = startX // Reset X position
       row.forEach((cell, i) => {
         doc.fontSize(8).font('Helvetica').text(cell, currentX, yPosition, {
           width: columnWidths[i],
-          align: 'left',
-        });
-        currentX += columnWidths[i] + columnSpacing; // Move to the next column
-      });
+          align: 'left'
+        })
+        currentX += columnWidths[i] + columnSpacing // Move to the next column
+      })
 
-      yPosition += 20; // Adjust row spacing
+      yPosition += 20 // Adjust row spacing
 
       // Handle Page Break
       if (yPosition > doc.page.height - 50) {
-        doc.addPage({ size: 'A4', layout: 'landscape' });
-        yPosition = 20;
-        drawTableHeader(); // Redraw headers on new page
+        doc.addPage({ size: 'A4', layout: 'landscape' })
+        yPosition = 20
+        drawTableHeader() // Redraw headers on new page
       }
-    });
+    })
 
     // Finalize PDF
-    doc.end();
+    doc.end()
 
     // Send file after writing
     stream.on('finish', () => {
       res.download(filePath, 'contact-submissions.pdf', (err) => {
         if (err) {
-          console.error(err);
+          console.error(err)
         }
-        fs.unlinkSync(filePath); // Delete the file after sending
-      });
-    });
+        fs.unlinkSync(filePath) // Delete the file after sending
+      })
+    })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
-
+}
