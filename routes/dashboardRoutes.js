@@ -21,7 +21,8 @@ router.get('/count', authenticate(), authorizeAdmin(), async (req, res) => {
       .select('updatedAt')
 
     const contactCount = await contact.countDocuments()
-    const contactLastUpdated = await contact.findOne()
+    const contactLastUpdated = await contact
+      .findOne()
       .sort({ updatedAt: -1 })
       .select('updatedAt')
 
@@ -29,13 +30,12 @@ router.get('/count', authenticate(), authorizeAdmin(), async (req, res) => {
     const userLastUpdated = await User.findOne()
       .sort({ updatedAt: -1 })
 
-      
       .select('updatedAt')
 
-      const testimonialCount = await Testimonial.countDocuments()
-      const testimonialLastUpdated = await Testimonial.findOne()
-        .sort({ updatedAt: -1 })
-        .select('updatedAt')
+    const testimonialCount = await Testimonial.countDocuments()
+    const testimonialLastUpdated = await Testimonial.findOne()
+      .sort({ updatedAt: -1 })
+      .select('updatedAt')
 
     // New additions
 
@@ -49,9 +49,7 @@ router.get('/count', authenticate(), authorizeAdmin(), async (req, res) => {
         },
         help: {
           count: contactCount,
-          lastUpdated: contactLastUpdated
-            ? contactLastUpdated.updatedAt
-            : null
+          lastUpdated: contactLastUpdated ? contactLastUpdated.updatedAt : null
         },
         testimonial: {
           count: testimonialCount,

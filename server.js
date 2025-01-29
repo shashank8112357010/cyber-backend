@@ -12,6 +12,7 @@ const blogRoutes = require('./routes/blogRoutes')
 const dashboardRoutes = require('./routes/dashboardRoutes.js')
 const testimonialRoutes = require('./routes/testimonialRoutes.js')
 const contactRoutes = require('./routes/contactRoutes.js')
+const subscribeRoutes = require('./routes/subscribeRoutes.js')
 
 const app = express()
 app.use(cors({}))
@@ -35,6 +36,7 @@ app.use('/cyber/api/blogs', blogRoutes) // Blog routes
 app.use('/cyber/api/testimonials', testimonialRoutes) // Testimonial routes
 app.use('/cyber/api/dashboard', dashboardRoutes) // Testimonial routes
 app.use('/cyber/api/contact', contactRoutes) // Testimonial routes
+app.use('/cyber/api/subscribe', subscribeRoutes) // Testimonial routes
 
 // Server Setup
 const PORT = process.env.PORT || 5000
