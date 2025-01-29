@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 exports.authenticate = () => (req, res, next) => {
- 
   const authHeader = req.header('Authorization')
- 
 
   // Check if the Authorization header exists
   if (!authHeader) {
