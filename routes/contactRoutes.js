@@ -18,6 +18,8 @@ router.post('/', submitContactForm)
 
 // Admin routes
 router.put('/:contactId', updateContactStatus)
+router.get('/', getAllContactSubmissions)
+
 router.get('/download/csv', downloadContactSubmissions)
 router.get('/download/pdf', downloadContactSubmissionsPdf)
 

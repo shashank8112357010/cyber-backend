@@ -47,7 +47,7 @@ exports.submitContactForm = async (req, res) => {
 
 exports.getAllContactSubmissions = async (req, res) => {
   try {
-    console.log('reaching')
+   
     const contacts = await ContactUs.find()
 
     res.status(200).json({

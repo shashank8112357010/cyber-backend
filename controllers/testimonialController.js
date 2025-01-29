@@ -8,8 +8,7 @@ exports.createTestimonial = async (req, res) => {
 
   try {
     const testimonialData = {
-      ...req.body,
-     
+      ...req.body
     }
 
     const testimonial = new Testimonial(testimonialData)
