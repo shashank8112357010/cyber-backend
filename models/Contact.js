@@ -54,7 +54,15 @@ const contactUsSchema = new mongoose.Schema(
     servicesInterestedIn: {
       type: [String],
       required: true,
-      enum: ['vapt', 'cloudSecurity', 'forensics' , 'Compliance', 'Corporate training' , 'Mobile Threat Intelligence' , 'other']
+      enum: [
+        'vapt',
+        'cloudSecurity',
+        'forensics',
+        'Compliance',
+        'Corporate training',
+        'Mobile Threat Intelligence',
+        'other'
+      ]
     },
     additionalNotes: {
       type: String

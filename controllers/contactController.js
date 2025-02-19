@@ -143,28 +143,31 @@ exports.downloadContactSubmissions = async (req, res) => {
 
 exports.downloadContactSubmissionsPdf = async (req, res) => {
   try {
-    const contacts = await ContactUs.find();
+    const contacts = await ContactUs.find()
 
     if (!contacts.length) {
       return res
         .status(404)
-        .json({ message: 'No contact form submissions found' });
+        .json({ message: 'No contact form submissions found' })
     }
 
-    const doc = new PDFDocument({ margin: 30, size: 'A4', layout: 'landscape' });
+    const doc = new PDFDocument({ margin: 30, size: 'A4', layout: 'landscape' })
 
     // Set headers to send the PDF directly in response
-    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Type', 'application/pdf')
     res.setHeader(
       'Content-Disposition',
       'attachment; filename=contact-submissions.pdf'
-    );
+    )
 
     // Pipe the PDF document to the response
-    doc.pipe(res);
+    doc.pipe(res)
 
     // Title
-    doc.fontSize(18).text('Contact Form Submissions', { align: 'center' }).moveDown(2);
+    doc
+      .fontSize(18)
+      .text('Contact Form Submissions', { align: 'center' })
+      .moveDown(2)
 
     // Table Headers
     const headers = [
@@ -176,28 +179,31 @@ exports.downloadContactSubmissionsPdf = async (req, res) => {
       'Company Size',
       'Website URL',
       'Services Interested In',
-      'Additional Notes',
-    ];
+      'Additional Notes'
+    ]
 
-    const columnWidths = [60, 120, 80, 100, 80, 80, 130, 120, 120];
-    const columnSpacing = 1;
-    const startX = 10;
-    let yPosition = doc.y;
+    const columnWidths = [60, 120, 80, 100, 80, 80, 130, 120, 120]
+    const columnSpacing = 1
+    const startX = 10
+    let yPosition = doc.y
 
     const drawTableHeader = () => {
-      let currentX = startX;
+      let currentX = startX
       headers.forEach((header, i) => {
-        doc.fontSize(7).font('Helvetica-Bold').text(header, currentX, yPosition, {
-          width: columnWidths[i],
-          align: 'left',
-        });
-        currentX += columnWidths[i] + columnSpacing;
-      });
-      yPosition += 20;
-    };
+        doc
+          .fontSize(7)
+          .font('Helvetica-Bold')
+          .text(header, currentX, yPosition, {
+            width: columnWidths[i],
+            align: 'left'
+          })
+        currentX += columnWidths[i] + columnSpacing
+      })
+      yPosition += 20
+    }
 
     // Draw Headers
-    drawTableHeader();
+    drawTableHeader()
 
     // Table Rows
     contacts.forEach((contact) => {
@@ -210,32 +216,31 @@ exports.downloadContactSubmissionsPdf = async (req, res) => {
         contact.companySize || '-',
         contact.websiteUrl || '-',
         (contact.servicesInterestedIn || []).join(', ') || '-',
-        contact.additionalNotes || '-',
-      ];
+        contact.additionalNotes || '-'
+      ]
 
-      let currentX = startX;
+      let currentX = startX
       row.forEach((cell, i) => {
         doc.fontSize(8).font('Helvetica').text(cell, currentX, yPosition, {
           width: columnWidths[i],
-          align: 'left',
-        });
-        currentX += columnWidths[i] + columnSpacing;
-      });
+          align: 'left'
+        })
+        currentX += columnWidths[i] + columnSpacing
+      })
 
-      yPosition += 20;
+      yPosition += 20
 
       // Handle Page Break
       if (yPosition > doc.page.height - 50) {
-        doc.addPage({ size: 'A4', layout: 'landscape' });
-        yPosition = 20;
-        drawTableHeader();
+        doc.addPage({ size: 'A4', layout: 'landscape' })
+        yPosition = 20
+        drawTableHeader()
       }
-    });
+    })
 
     // Finalize PDF
-    doc.end();
+    doc.end()
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
-
+}
