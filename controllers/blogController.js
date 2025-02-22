@@ -3,9 +3,10 @@ const { blogSchema } = require('../validation/validation')
 
 exports.createBlog = async (req, res) => {
   // Validate the data (excluding the image file)
+  console.log("Received File:", req.file);
   const { error } = blogSchema.validate(req.body)
   if (error) return res.status(400).json({ message: error.details[0].message })
-  console.log(req)
+  
   try {
     // Create a blog with the uploaded image path
     const blogData = {
